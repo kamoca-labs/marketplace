@@ -1,9 +1,24 @@
 {
   "name": "kauan",
-  "description": "Plugins pessoais do Claude Code organizados por domínio (git, gitlab).",
-  "owner": { "name": "Kauan Morinel Calheiro" },
+  "description": "Plugins pessoais do Claude Code organizados por domínio (git, gitlab, craft).",
+  "owner": {
+    "name": "Kauan Morinel Calheiro"
+  },
   "plugins": [
-    { "name": "git", "source": "./plugins/git", "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado." },
-    { "name": "gitlab", "source": "./plugins/gitlab", "description": "Merge request via MCP do GitLab com título semântico, descrição obrigatória e revisores." }
+    {
+      "name": "git",
+      "source": "./plugins/git",
+      "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado."
+    },
+    {
+      "name": "gitlab",
+      "source": "./plugins/gitlab",
+      "description": "Merge request via MCP do GitLab com título semântico, descrição obrigatória e revisores."
+    },
+    {
+      "name": "craft",
+      "source": "./plugins/craft",
+      "description": "Fluxo ATDD e refactor guiado por princípios (SOLID, KISS, YAGNI, DRY, Clean Code), uma skill por princípio."
+    }
   ]
 }
