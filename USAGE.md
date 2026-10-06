@@ -19,8 +19,8 @@ Como manter, testar e combinar os plugins. A instalação está no [README](READ
 O Claude Code copia cada plugin para `~/.claude/plugins/cache/` **por versão**. Editar o repo não muda nada até você atualizar:
 
 1. Suba o `version` em `plugins/<nome>/.claude-plugin/plugin.json` (ex.: `0.1.0` para `0.2.0`).
-2. Rode `claude plugin marketplace update kauan`.
-3. Rode `claude plugin update <nome>@kauan`.
+2. Rode `claude plugin marketplace update kamoca`.
+3. Rode `claude plugin update <nome>@kamoca`.
 4. Abra uma sessão nova.
 
 ## Testar sem instalar
@@ -114,7 +114,7 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 | Mudei o repo e nada mudou | o plugin roda da cópia em cache | [atualize a versão](#atualizar-depois-de-editar) |
 | `[git:<regra>] ...` negou o commit | a mensagem viola uma regra | veja [mensagens negadas](plugins/git/USAGE.md#quando-o-hook-nega) |
 | Hook negou algo que devia passar | falso positivo da regra | [transforme o caso em teste](#transformar-caso-real-em-teste) e corrija |
-| `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kauan`; só o repo usa `claude-plugins` |
+| `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kamoca`; só o repo usa `claude-plugins` |
 | Commit negado por outro hook (`[commit-hook]`) | hook do projeto aberto na sessão, não deste repo | rode o comando você mesmo com `!` no prompt |
 
 ## Casos de uso por plugin

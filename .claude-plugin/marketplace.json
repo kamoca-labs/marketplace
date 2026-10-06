@@ -1,8 +1,8 @@
 {
-  "name": "kauan",
-  "description": "Plugins pessoais do Claude Code organizados por domínio (git, craft).",
+  "name": "kamoca",
+  "description": "Plugins do Claude Code da kamoca, organizados por domínio (git, craft).",
   "owner": {
-    "name": "Kauan Morinel Calheiro"
+    "name": "kamoca"
   },
   "plugins": [
     {

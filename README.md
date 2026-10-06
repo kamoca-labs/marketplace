@@ -1,4 +1,4 @@
-# claude-plugins
+# kamoca
 
 ## Sumário
 
@@ -12,19 +12,19 @@
 ## Instalação
 
 ```bash
-git clone https://github.com/kamoca-labs/marketplace.git ~/Development/claude-plugins
+git clone https://github.com/KauanCalheiro/claude-plugins.git ~/Development/claude-plugins
 claude plugin marketplace add ~/Development/claude-plugins
-claude plugin install git@kauan
-claude plugin install craft@kauan
+claude plugin install git@kamoca
+claude plugin install craft@kamoca
 ```
 
-Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão.
+Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão. O repo é privado: o clone usa suas credenciais do GitHub (`gh auth login`).
 
 ## Contexto
 
 Marketplace pessoal de plugins do [Claude Code](https://code.claude.com), organizado por domínio. Cada plugin junta as skills (os comandos `/dominio:acao`) e os hooks que **garantem** as regras daquele domínio, em vez de depender do modelo lembrar delas.
 
-As skills de commit nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kauan`) para que:
+As skills de commit nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kamoca`) para que:
 
 - tudo fique versionado e revisado por PR, como qualquer código;
 - cada domínio (git, craft) evolua e seja instalado de forma independente;
@@ -79,7 +79,7 @@ Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no for
 ## Estrutura do repo
 
 ```
-.claude-plugin/marketplace.json     lista os plugins do marketplace "kauan"
+.claude-plugin/marketplace.json     lista os plugins do marketplace "kamoca"
 plugins/
 ├── git/
 │   ├── .claude-plugin/plugin.json
