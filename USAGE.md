@@ -84,7 +84,7 @@ tail -n 5 ~/.claude/hook-cases.jsonl | node -e 'require("readline").createInterf
 | **Falso positivo** (negou o que devia passar) | copie a linha para `plugins/<plugin>/hooks/tests/cases.json`, troque `deny` para `[]`, ajuste `origin` para `real <data>` e corrija a regra até o caso passar |
 | **Falso negativo** (deixou passar o que devia negar) | não há linha capturada; escreva o caso à mão no `cases.json` com o `deny` esperado e corrija a regra |
 
-O campo `plugin` só serve para saber em qual `cases.json` colar; o teste ignora. No `practices`, que injeta contexto em vez de negar, a linha traz `inject` no lugar de `deny` e o fluxo é o mesmo. O primeiro caso real do repo é o falso positivo do `$VAR` (`origin: "real 2026-10-06"` no `cases.json` do `git`).
+O campo `plugin` só serve para saber em qual `cases.json` colar; o teste ignora. No `craft`, que injeta contexto em vez de negar, a linha traz `inject` no lugar de `deny` e o fluxo é o mesmo. O primeiro caso real do repo é o falso positivo do `$VAR` (`origin: "real 2026-10-06"` no `cases.json` do `git`).
 
 ## Combinar comandos
 
@@ -123,4 +123,4 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 
 - [plugins/git/USAGE.md](plugins/git/USAGE.md)
 - [plugins/gitlab/USAGE.md](plugins/gitlab/USAGE.md)
-- [plugins/practices/USAGE.md](plugins/practices/USAGE.md)
+- [plugins/craft/USAGE.md](plugins/craft/USAGE.md)

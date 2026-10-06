@@ -16,7 +16,7 @@ git clone https://github.com/kamoca-labs/marketplace.git ~/Development/claude-pl
 claude plugin marketplace add ~/Development/claude-plugins
 claude plugin install git@kauan
 claude plugin install gitlab@kauan
-claude plugin install practices@kauan
+claude plugin install craft@kauan
 ```
 
 Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão. O `gitlab` já traz o MCP do GitLab: só falta autenticar com `/mcp` (veja os [pré-requisitos](plugins/gitlab/README.md#pré-requisitos)).
@@ -28,7 +28,7 @@ Marketplace pessoal de plugins do [Claude Code](https://code.claude.com), organi
 As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kauan`) para que:
 
 - tudo fique versionado e revisado por MR, como qualquer código;
-- cada domínio (git, gitlab, practices) evolua e seja instalado de forma independente;
+- cada domínio (git, gitlab, craft) evolua e seja instalado de forma independente;
 - as regras de histórico (commit semântico, body explicando o porquê, nada direto na main) e as boas práticas (ATDD, refactor) valham em **todos** os projetos, não só em um.
 
 ## Catálogo
@@ -39,8 +39,9 @@ As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão.
 | | `/git:chamado <n>` | Usa o número do chamado como escopo; sozinho, cria a branch do chamado |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | [`gitlab`](plugins/gitlab/README.md) | `/gitlab:mr` | Abre ou atualiza o MR via MCP, com descrição obrigatória e revisores |
-| [`practices`](plugins/practices/README.md) | `/practices:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
-| | `/practices:refactor` | Aplica SOLID, KISS, YAGNI, DRY e Clean Code; o hook injeta isso sozinho quando a suíte fica verde |
+| [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
+| | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
+| | `/craft:<princípio>` | Um princípio só, a fundo (`/craft:dry`, `/craft:errors`, ...) |
 
 Os comandos se combinam nos argumentos:
 
@@ -94,9 +95,11 @@ plugins/
 │   ├── .mcp.json                servidor MCP do GitLab
 │   ├── skills/mr/SKILL.md
 │   └── hooks/                   mesma estrutura do git
-└── practices/
+└── craft/
     ├── .claude-plugin/plugin.json
-    ├── skills/{atdd,refactor}/SKILL.md
+    ├── skills/craft/SKILL.md      triagem dos princípios
+    ├── skills/atdd/SKILL.md
+    ├── skills/<princípio>/SKILL.md  um por princípio
     └── hooks/                   mesma estrutura do git
 ```
 
@@ -109,5 +112,5 @@ plugins/
 | [plugins/git/USAGE.md](plugins/git/USAGE.md) | Casos de uso do `git`, com exemplos de mensagens aceitas e negadas |
 | [plugins/gitlab/README.md](plugins/gitlab/README.md) | Catálogo, regras e pré-requisitos (MCP) do plugin `gitlab` |
 | [plugins/gitlab/USAGE.md](plugins/gitlab/USAGE.md) | Casos de uso do `gitlab`: revisores, draft, chamado, atualização de MR |
-| [plugins/practices/README.md](plugins/practices/README.md) | Comandos, hook de refactor e executores de teste reconhecidos |
-| [plugins/practices/USAGE.md](plugins/practices/USAGE.md) | ATDD em feature e bug, refactor automático e sob demanda |
+| [plugins/craft/README.md](plugins/craft/README.md) | Comandos, skills por princípio, hook de refactor e executores de teste reconhecidos |
+| [plugins/craft/USAGE.md](plugins/craft/USAGE.md) | ATDD em feature e bug, refactor automático e sob demanda |
