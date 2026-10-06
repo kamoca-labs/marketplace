@@ -1,0 +1,9 @@
+{
+  "name": "kauan",
+  "description": "Plugins pessoais do Claude Code organizados por domínio (git, gitlab).",
+  "owner": { "name": "Kauan Morinel Calheiro" },
+  "plugins": [
+    { "name": "git", "source": "./plugins/git", "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado." },
+    { "name": "gitlab", "source": "./plugins/gitlab", "description": "Merge request via MCP do GitLab com título semântico, descrição obrigatória e revisores." }
+  ]
+}
