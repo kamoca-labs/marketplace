@@ -15,47 +15,42 @@
 git clone https://github.com/kamoca-labs/marketplace.git ~/Development/claude-plugins
 claude plugin marketplace add ~/Development/claude-plugins
 claude plugin install git@kauan
-claude plugin install gitlab@kauan
 claude plugin install craft@kauan
 ```
 
-Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão. O `gitlab` já traz o MCP do GitLab: só falta autenticar com `/mcp` (veja os [pré-requisitos](plugins/gitlab/README.md#pré-requisitos)).
+Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão.
 
 ## Contexto
 
 Marketplace pessoal de plugins do [Claude Code](https://code.claude.com), organizado por domínio. Cada plugin junta as skills (os comandos `/dominio:acao`) e os hooks que **garantem** as regras daquele domínio, em vez de depender do modelo lembrar delas.
 
-As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kauan`) para que:
+As skills de commit nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kauan`) para que:
 
-- tudo fique versionado e revisado por MR, como qualquer código;
-- cada domínio (git, gitlab, craft) evolua e seja instalado de forma independente;
-- as regras de histórico (commit semântico, body explicando o porquê, nada direto na main) e as boas práticas (ATDD, refactor) valham em **todos** os projetos, não só em um.
+- tudo fique versionado e revisado por PR, como qualquer código;
+- cada domínio (git, craft) evolua e seja instalado de forma independente;
+- as regras de histórico (commit semântico, body explicando o porquê, nada direto na main) e as boas práticas (ATDD, refactor) valham em **todos** os projetos, do trabalho e pessoais.
+
+Aqui só entra o que é geral. O que é de um lugar só (a integração com o GitLab do trabalho, por exemplo) fica num marketplace próprio e se combina com estes pelos argumentos dos comandos.
 
 ## Catálogo
 
 | Plugin | Comando | O que faz |
 |---|---|---|
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
-| | `/git:chamado <n>` | Usa o número do chamado como escopo; sozinho, cria a branch do chamado |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
 | | `/git:desfazer` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
-| [`gitlab`](plugins/gitlab/README.md) | `/gitlab:mr` | Abre ou atualiza o MR via MCP, com descrição obrigatória e revisores |
-| | `/gitlab:review <mr>` | Revisa o MR de outra pessoa e publica os comentários inline depois da sua confirmação |
-| | `/gitlab:ci` | Diagnostica o pipeline que falhou pelo log dos jobs |
-| | `/gitlab:release` | Versão e changelog pelos commits semânticos, tag e release |
-| | `/gitlab:daily` | Resume o que você fez em tópicos de ontem, hoje e bloqueios |
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
 | | `/craft:legado` | O mesmo fluxo para sistema legado sem teste automatizado, com sonda e roteiro manual |
 | | `/craft:<princípio>` | Um princípio só, a fundo (`/craft:dry`, `/craft:errors`, ...) |
 
-Os comandos se combinam nos argumentos:
+Os comandos se combinam nos argumentos, inclusive com os de outros marketplaces:
 
 ```
-/git:commit /git:chamado 19738 /gitlab:mr @fulano
+/git:commit /<plugin>:<comando> @fulano
 ```
 
 ## Como as regras são garantidas
@@ -88,7 +83,7 @@ Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no for
 plugins/
 ├── git/
 │   ├── .claude-plugin/plugin.json
-│   ├── skills/{commit,chamado,main}/SKILL.md
+│   ├── skills/{commit,main,sync,split,desfazer}/SKILL.md
 │   └── hooks/
 │       ├── hooks.json           um hook por regra
 │       ├── lib.ts               leitura do payload, mensagem, prompt
@@ -99,11 +94,6 @@ plugins/
 │           ├── cases.test.ts    roda o cases.json contra o hooks.json
 │           ├── capture.test.ts  negação real vira caso
 │           └── structure.test.ts
-├── gitlab/
-│   ├── .claude-plugin/plugin.json
-│   ├── .mcp.json                servidor MCP do GitLab
-│   ├── skills/mr/SKILL.md
-│   └── hooks/                   mesma estrutura do git
 └── craft/
     ├── .claude-plugin/plugin.json
     ├── skills/craft/SKILL.md      triagem dos princípios
@@ -119,7 +109,5 @@ plugins/
 | [USAGE.md](USAGE.md) | Atualizar, testar, criar regra nova, transformar caso real em teste, combinar comandos, solução de problemas |
 | [plugins/git/README.md](plugins/git/README.md) | Catálogo e regras do plugin `git` |
 | [plugins/git/USAGE.md](plugins/git/USAGE.md) | Casos de uso do `git`, com exemplos de mensagens aceitas e negadas |
-| [plugins/gitlab/README.md](plugins/gitlab/README.md) | Catálogo, regras e pré-requisitos (MCP) do plugin `gitlab` |
-| [plugins/gitlab/USAGE.md](plugins/gitlab/USAGE.md) | Casos de uso do `gitlab`: revisores, draft, chamado, atualização de MR |
 | [plugins/craft/README.md](plugins/craft/README.md) | Comandos, skills por princípio, hook de refactor e executores de teste reconhecidos |
 | [plugins/craft/USAGE.md](plugins/craft/USAGE.md) | ATDD em feature e bug, refactor automático e sob demanda |

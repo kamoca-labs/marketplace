@@ -1,6 +1,6 @@
 {
   "name": "kauan",
-  "description": "Plugins pessoais do Claude Code organizados por domínio (git, gitlab, craft).",
+  "description": "Plugins pessoais do Claude Code organizados por domínio (git, craft).",
   "owner": {
     "name": "Kauan Morinel Calheiro"
   },
@@ -9,11 +9,6 @@
       "name": "git",
       "source": "./plugins/git",
       "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado."
-    },
-    {
-      "name": "gitlab",
-      "source": "./plugins/gitlab",
-      "description": "Merge request, review, pipeline, release e daily via MCP do GitLab."
     },
     {
       "name": "craft",

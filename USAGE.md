@@ -93,18 +93,17 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 | Você digita | O que acontece |
 |---|---|
 | `/git:commit` | commita e faz push na branch atual (cria uma branch se estiver na main) |
-| `/git:commit /gitlab:mr` | commita, faz push e abre o MR |
-| `/git:commit /git:chamado 19738` | commits com escopo `(19738)` |
-| `/git:chamado 19738 /git:commit /gitlab:mr @fulano` | commits e MR do chamado, com revisor |
+| `/git:commit /<plugin>:<comando> @fulano` | commita, faz push e invoca o comando do outro plugin com o resto dos argumentos |
 | `/git:commit /git:main` | commit direto na main, com justificativa e auditoria |
-| `/gitlab:mr @auto draft` | MR em rascunho, com revisores sugeridos pelo histórico |
+| `/git:split /<plugin>:<comando>` | quebra a branch e invoca o comando para cada parte, na ordem |
 
 ## Fluxo do dia a dia
 
 ```
-/git:chamado 19738 corrigir upload de anexo      cria fix/19738-corrigir-upload-de-anexo
-... trabalho ...
-/git:commit /git:chamado 19738 /gitlab:mr @fulano
+/craft:atdd recusar anexo acima de 10 MB      especificação, teste vermelho, verde e refactor
+/git:commit                                    cria a branch, commita e faz push
+... revisão e merge ...
+/git:sync                                      volta para a main atualizada e apaga a branch
 ```
 
 ## Solução de problemas
@@ -117,10 +116,8 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 | Hook negou algo que devia passar | falso positivo da regra | [transforme o caso em teste](#transformar-caso-real-em-teste) e corrija |
 | `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kauan`; só o repo usa `claude-plugins` |
 | Commit negado por outro hook (`[commit-hook]`) | hook do projeto aberto na sessão, não deste repo | rode o comando você mesmo com `!` no prompt |
-| MCP `gitlab` (ou `plugin:gitlab:gitlab`) com `Failed to connect` | discovery OAuth do GitLab em subpath | veja [pré-requisitos](plugins/gitlab/README.md#pré-requisitos) |
 
 ## Casos de uso por plugin
 
 - [plugins/git/USAGE.md](plugins/git/USAGE.md)
-- [plugins/gitlab/USAGE.md](plugins/gitlab/USAGE.md)
 - [plugins/craft/USAGE.md](plugins/craft/USAGE.md)
