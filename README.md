@@ -38,6 +38,7 @@ As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão.
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
 | | `/git:chamado <n>` | Usa o número do chamado como escopo; sozinho, cria a branch do chamado |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
+| | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
 | | `/git:desfazer` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
 | [`gitlab`](plugins/gitlab/README.md) | `/gitlab:mr` | Abre ou atualiza o MR via MCP, com descrição obrigatória e revisores |
@@ -46,7 +47,9 @@ As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão.
 | | `/gitlab:release` | Versão e changelog pelos commits semânticos, tag e release |
 | | `/gitlab:daily` | Resume o que você fez em tópicos de ontem, hoje e bloqueios |
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
+| | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
+| | `/craft:legado` | O mesmo fluxo para sistema legado sem teste automatizado, com sonda e roteiro manual |
 | | `/craft:<princípio>` | Um princípio só, a fundo (`/craft:dry`, `/craft:errors`, ...) |
 
 Os comandos se combinam nos argumentos:
