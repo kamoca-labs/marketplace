@@ -13,7 +13,7 @@
     {
       "name": "gitlab",
       "source": "./plugins/gitlab",
-      "description": "Merge request via MCP do GitLab com título semântico, descrição obrigatória e revisores."
+      "description": "Merge request, review, pipeline, release e daily via MCP do GitLab."
     },
     {
       "name": "craft",

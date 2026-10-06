@@ -38,7 +38,13 @@ As skills de commit e merge request nasceram soltas em `~/.claude`, sem versão.
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
 | | `/git:chamado <n>` | Usa o número do chamado como escopo; sozinho, cria a branch do chamado |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
+| | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
+| | `/git:desfazer` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
 | [`gitlab`](plugins/gitlab/README.md) | `/gitlab:mr` | Abre ou atualiza o MR via MCP, com descrição obrigatória e revisores |
+| | `/gitlab:review <mr>` | Revisa o MR de outra pessoa e publica os comentários inline depois da sua confirmação |
+| | `/gitlab:ci` | Diagnostica o pipeline que falhou pelo log dos jobs |
+| | `/gitlab:release` | Versão e changelog pelos commits semânticos, tag e release |
+| | `/gitlab:daily` | Resume o que você fez em tópicos de ontem, hoje e bloqueios |
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
 | | `/craft:<princípio>` | Um princípio só, a fundo (`/craft:dry`, `/craft:errors`, ...) |
