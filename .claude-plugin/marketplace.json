@@ -2,7 +2,7 @@
   "name": "kamoca",
   "description": "Plugins do Claude Code da kamoca, organizados por domínio (git, craft, docker).",
   "owner": {
-    "name": "kamoca"
+    "name": "Kauan Morinel Calheiro"
   },
   "plugins": [
     {
