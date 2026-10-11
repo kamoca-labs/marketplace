@@ -44,6 +44,7 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
+| | (automático) | Hook carrega em toda sessão a skill `craft:ste`: respostas e textos no padrão ASD-STE100 |
 
 Os comandos se combinam nos argumentos, inclusive com os de outros marketplaces:
 
