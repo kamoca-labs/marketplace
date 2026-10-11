@@ -40,7 +40,7 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
-| | `/git:desfazer` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
+| | `/git:undo` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
@@ -82,7 +82,7 @@ Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no for
 plugins/
 ├── git/
 │   ├── .claude-plugin/plugin.json
-│   ├── skills/{commit,main,sync,split,desfazer}/SKILL.md
+│   ├── skills/{commit,main,sync,split,undo}/SKILL.md
 │   └── hooks/
 │       ├── hooks.json           um hook por regra
 │       ├── lib.ts               leitura do payload, mensagem, prompt
