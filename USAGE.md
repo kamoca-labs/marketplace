@@ -121,3 +121,4 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 
 - [plugins/git/USAGE.md](plugins/git/USAGE.md)
 - [plugins/craft/USAGE.md](plugins/craft/USAGE.md)
+- [plugins/docker/USAGE.md](plugins/docker/USAGE.md)
