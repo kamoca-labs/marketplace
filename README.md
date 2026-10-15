@@ -42,7 +42,7 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
 | | `/git:undo` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
-| [`craft`](plugins/craft/README.md) | `/craft:craft` | Triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
+| [`craft`](plugins/craft/README.md) | `/craft:craft` | Regra raiz (menos código é melhor do que mais código) e triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
 | | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
 | | (automático) | Hook carrega em toda sessão a skill `craft:ste`: respostas e textos no padrão ASD-STE100 |
