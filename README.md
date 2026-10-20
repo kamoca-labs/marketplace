@@ -38,7 +38,7 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | Plugin | Comando | O que faz |
 |---|---|---|
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
-| | `/git:mr` | Abre o PR/MR com descrição curta (por quê e como), sem menção a IA |
+| | `/git:mr` | Abre o PR/MR pelo MCP ou pela CLI, com revisores, draft e destino, sem squash e sem menção a IA |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
