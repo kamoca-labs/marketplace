@@ -38,7 +38,11 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | Plugin | Comando | O que faz |
 |---|---|---|
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
-| | `/git:mr` | Abre o PR/MR com descrição curta (por quê e como), sem menção a IA |
+| | `/git:mr` | Abre o PR/MR pelo MCP ou pela CLI, com revisores, draft e destino, sem squash e sem menção a IA |
+| | `/git:review` | Revisa o PR/MR de outra pessoa pelo link, com confirmação antes de publicar |
+| | `/git:ci` | Diagnostica o CI que falhou e roda de novo as falhas intermitentes |
+| | `/git:daily` | Escreve a daily com os commits locais e os PR/MR do GitHub e do GitLab |
+| | `/git:release` | Versão, changelog, tag e release na forja |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
@@ -88,7 +92,8 @@ Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no for
 plugins/
 ├── git/
 │   ├── .claude-plugin/plugin.json
-│   ├── skills/{commit,main,sync,split,undo}/SKILL.md
+│   ├── skills/{commit,mr,review,ci,daily,release,main,sync,split,undo}/SKILL.md
+│   ├── skills/forge/SKILL.md  sub-skill privada: forja, projeto e ferramenta
 │   └── hooks/
 │       ├── hooks.json           um hook por regra
 │       ├── lib.ts               leitura do payload, mensagem, prompt
