@@ -92,7 +92,8 @@ Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no for
 plugins/
 ├── git/
 │   ├── .claude-plugin/plugin.json
-│   ├── skills/{commit,main,sync,split,undo}/SKILL.md
+│   ├── skills/{commit,mr,review,ci,daily,release,main,sync,split,undo}/SKILL.md
+│   ├── skills/forge/SKILL.md  sub-skill privada: forja, projeto e ferramenta
 │   └── hooks/
 │       ├── hooks.json           um hook por regra
 │       ├── lib.ts               leitura do payload, mensagem, prompt
