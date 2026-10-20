@@ -39,6 +39,10 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 |---|---|---|
 | [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
 | | `/git:mr` | Abre o PR/MR pelo MCP ou pela CLI, com revisores, draft e destino, sem squash e sem menção a IA |
+| | `/git:review` | Revisa o PR/MR de outra pessoa pelo link, com confirmação antes de publicar |
+| | `/git:ci` | Diagnostica o CI que falhou e roda de novo as falhas intermitentes |
+| | `/git:daily` | Escreve a daily com os commits locais e os PR/MR do GitHub e do GitLab |
+| | `/git:release` | Versão, changelog, tag e release na forja |
 | | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
 | | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
 | | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
