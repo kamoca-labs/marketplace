@@ -49,7 +49,7 @@ Aqui só entra o que é geral. O que é de um lugar só (a integração com o Gi
 | | `/git:undo` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
 | [`craft`](plugins/craft/README.md) | `/craft:craft` | Regra raiz (menos código é melhor do que mais código) e triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
 | | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
-| | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final |
+| | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final, com tarefas por cenário e meta que segura o fim do turno até a condição valer |
 | | `/craft:style` | Modo estilo para mudança só visual: itera a tela com o impeccable, sem teste antes, e manda o comportamento para o `/craft:atdd` |
 | | `/craft:memory` | Memória de longo prazo do projeto em `.claude/memory/`, no repo. O hook carrega o catálogo em toda sessão e nega memória fora do projeto |
 | | (automático) | Hook carrega em toda sessão a skill `craft:ste`: respostas e textos no padrão ASD-STE100 |
