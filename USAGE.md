@@ -1,6 +1,6 @@
 # Uso do marketplace
 
-Como manter, testar e combinar os plugins. A instalação está no [README](README.md#instalação). Os casos de uso de cada comando ficam no USAGE do plugin.
+Como manter, testar e combinar os plugins. Cada plugin vive no repo dele em `kamoca-labs/<plugin>`, e os caminhos abaixo valem a partir da raiz desse repo. A instalação está no [README](README.md#instalação). Os casos de uso de cada comando ficam no USAGE do plugin.
 
 ## Sumário
 
@@ -18,7 +18,7 @@ Como manter, testar e combinar os plugins. A instalação está no [README](READ
 
 O Claude Code copia cada plugin para `~/.claude/plugins/cache/` **por versão**. Editar o repo não muda nada até você atualizar:
 
-1. Suba o `version` em `plugins/<nome>/.claude-plugin/plugin.json` (ex.: `0.1.0` para `0.2.0`).
+1. Suba o `version` em `.claude-plugin/plugin.json` do repo do plugin (ex.: `0.1.0` para `0.2.0`).
 2. Rode `claude plugin marketplace update kamoca`.
 3. Rode `claude plugin update <nome>@kamoca`.
 4. Abra uma sessão nova.
@@ -28,7 +28,7 @@ O Claude Code copia cada plugin para `~/.claude/plugins/cache/` **por versão**.
 Para experimentar uma mudança antes de subir a versão:
 
 ```bash
-claude --plugin-dir ~/Development/claude-plugins/plugins/git
+claude --plugin-dir ~/Developer/kamoca-labs/git
 ```
 
 ## Rodar os testes dos hooks
@@ -36,19 +36,19 @@ claude --plugin-dir ~/Development/claude-plugins/plugins/git
 Tudo com `node:test`, sem dependência:
 
 ```bash
-node --test 'plugins/**/hooks/tests/*.test.ts'            # todos
-node --test plugins/git/hooks/tests/commit-body.test.ts   # uma regra
-node --test plugins/git/hooks/tests/cases.test.ts         # casos de uso do git
+node --test 'hooks/tests/*.test.ts'                       # todos
+node --test hooks/tests/commit-body.test.ts              # uma regra
+node --test hooks/tests/cases.test.ts                    # casos de uso
 ```
 
 Os três níveis (regra, caso de uso, estrutura) estão descritos no [README](README.md#como-as-regras-são-garantidas). O teste de estrutura falha se uma regra ficar sem hook no `hooks.json` ou sem `<regra>.test.ts`.
 
 ## Criar uma regra nova
 
-1. **Teste primeiro** em `plugins/<plugin>/hooks/tests/<regra>.test.ts`, usando o `helpers.ts` da pasta, e confirme que ele falha.
-2. **A regra** em `plugins/<plugin>/hooks/rules/<regra>.ts`: lê o payload com `readInput()`, nega com `deny('<regra>', 'motivo')` e termina sem fazer nada quando não se aplica.
-3. **O hook** no `plugins/<plugin>/hooks/hooks.json`: uma entrada própria, com `if:` (Bash) ou `matcher` (MCP) e `statusMessage` `<plugin>:<regra>: ...`.
-4. **Os casos de uso** no `plugins/<plugin>/hooks/tests/cases.json`: pelo menos um cenário que a regra nega e um que ela libera. Ajuste o `deny` dos casos existentes que a regra nova afeta.
+1. **Teste primeiro** em `hooks/tests/<regra>.test.ts`, usando o `helpers.ts` da pasta, e confirme que ele falha.
+2. **A regra** em `hooks/rules/<regra>.ts`: lê o payload com `readInput()`, nega com `deny('<regra>', 'motivo')` e termina sem fazer nada quando não se aplica.
+3. **O hook** no `hooks/hooks.json`: uma entrada própria, com `if:` (Bash) ou `matcher` (MCP) e `statusMessage` `<plugin>:<regra>: ...`.
+4. **Os casos de uso** no `hooks/tests/cases.json`: pelo menos um cenário que a regra nega e um que ela libera. Ajuste o `deny` dos casos existentes que a regra nova afeta.
 5. **A documentação**: uma linha na tabela de regras do README do plugin e o caso de negação no USAGE.
 6. Suba o `version` e [atualize](#atualizar-depois-de-editar).
 
@@ -81,7 +81,7 @@ tail -n 5 ~/.claude/hook-cases.jsonl | node -e 'require("readline").createInterf
 | Situação | O que fazer |
 |---|---|
 | **Negou certo** | nada; se o cenário for novo, vale guardar como regressão |
-| **Falso positivo** (negou o que devia passar) | copie a linha para `plugins/<plugin>/hooks/tests/cases.json`, troque `deny` para `[]`, ajuste `origin` para `real <data>` e corrija a regra até o caso passar |
+| **Falso positivo** (negou o que devia passar) | copie a linha para `hooks/tests/cases.json`, troque `deny` para `[]`, ajuste `origin` para `real <data>` e corrija a regra até o caso passar |
 | **Falso negativo** (deixou passar o que devia negar) | não há linha capturada; escreva o caso à mão no `cases.json` com o `deny` esperado e corrija a regra |
 
 O campo `plugin` só serve para saber em qual `cases.json` colar; o teste ignora. No `craft`, que injeta contexto em vez de negar, a linha traz `inject` no lugar de `deny` e o fluxo é o mesmo. O primeiro caso real do repo é o falso positivo do `$VAR` (`origin: "real 2026-10-06"` no `cases.json` do `git`).
@@ -112,13 +112,13 @@ Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a 
 |---|---|---|
 | `/git:commit` não aparece | plugin instalado na sessão atual | abra uma sessão nova |
 | Mudei o repo e nada mudou | o plugin roda da cópia em cache | [atualize a versão](#atualizar-depois-de-editar) |
-| `[git:<regra>] ...` negou o commit | a mensagem viola uma regra | veja [mensagens negadas](plugins/git/USAGE.md#quando-o-hook-nega) |
+| `[git:<regra>] ...` negou o commit | a mensagem viola uma regra | veja [mensagens negadas](https://github.com/kamoca-labs/git/blob/main/USAGE.md#quando-o-hook-nega) |
 | Hook negou algo que devia passar | falso positivo da regra | [transforme o caso em teste](#transformar-caso-real-em-teste) e corrija |
-| `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kamoca`; só o repo usa `claude-plugins` |
+| `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kamoca`; o repo é `kamoca-labs/marketplace` |
 | Commit negado por outro hook (`[commit-hook]`) | hook do projeto aberto na sessão, não deste repo | rode o comando você mesmo com `!` no prompt |
 
 ## Casos de uso por plugin
 
-- [plugins/git/USAGE.md](plugins/git/USAGE.md)
-- [plugins/craft/USAGE.md](plugins/craft/USAGE.md)
-- [plugins/docker/USAGE.md](plugins/docker/USAGE.md)
+- [git/USAGE.md](https://github.com/kamoca-labs/git/blob/main/USAGE.md)
+- [craft/USAGE.md](https://github.com/kamoca-labs/craft/blob/main/USAGE.md)
+- [docker/USAGE.md](https://github.com/kamoca-labs/docker/blob/main/USAGE.md)

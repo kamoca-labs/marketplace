@@ -7,17 +7,26 @@
   "plugins": [
     {
       "name": "git",
-      "source": "./plugins/git",
+      "source": {
+        "source": "github",
+        "repo": "kamoca-labs/git"
+      },
       "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado."
     },
     {
       "name": "craft",
-      "source": "./plugins/craft",
+      "source": {
+        "source": "github",
+        "repo": "kamoca-labs/craft"
+      },
       "description": "Fluxo ATDD e refactor guiado por princípios (SOLID, KISS, YAGNI, DRY, Clean Code), uma skill por princípio."
     },
     {
       "name": "docker",
-      "source": "./plugins/docker",
+      "source": {
+        "source": "github",
+        "repo": "kamoca-labs/docker"
+      },
       "description": "Ambiente Docker de dev (hot reload) e prod (./deploy, imagem enxuta) com regras garantidas por hook; ajuste com medição."
     }
   ]
