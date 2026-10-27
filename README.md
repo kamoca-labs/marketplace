@@ -1,132 +1,117 @@
 # kamoca
 
-## Sumário
+## Contents
 
-- [Instalação](#instalação)
-- [Contexto](#contexto)
-- [Catálogo](#catálogo)
-- [Como as regras são garantidas](#como-as-regras-são-garantidas)
-- [Estrutura do repo](#estrutura-do-repo)
-- [Documentação](#documentação)
+- [Installation](#installation)
+- [Context](#context)
+- [Catalog](#catalog)
+- [How the rules are enforced](#how-the-rules-are-enforced)
+- [Plugin structure](#plugin-structure)
+- [Documentation](#documentation)
 
-## Instalação
+## Installation
 
 ```bash
-git clone https://github.com/KauanCalheiro/claude-plugins.git ~/Development/claude-plugins
-claude plugin marketplace add ~/Development/claude-plugins
+claude plugin marketplace add kamoca-labs/marketplace
 claude plugin install git@kamoca
 claude plugin install craft@kamoca
 claude plugin install docker@kamoca
 ```
 
-Requer Node 22.18+ (os hooks são `.ts` executados direto pelo Node). Os comandos aparecem na próxima sessão. O repo é privado: o clone usa suas credenciais do GitHub (`gh auth login`).
+Node 22.18 or later is required. The hooks are `.ts` files that Node runs directly. The commands appear in the next session. The repos are private: Claude Code uses your GitHub credentials (`gh auth login`).
 
-## Contexto
+## Context
 
-Marketplace pessoal de plugins do [Claude Code](https://code.claude.com), organizado por domínio. Cada plugin junta as skills (os comandos `/dominio:acao`) e os hooks que **garantem** as regras daquele domínio, em vez de depender do modelo lembrar delas.
+This is a personal marketplace of [Claude Code](https://code.claude.com) plugins, grouped by domain. Each plugin combines skills (the `/domain:action` commands) and hooks. The hooks **enforce** the rules of that domain, so the model does not need to remember them.
 
-As skills de commit nasceram soltas em `~/.claude`, sem versão. Este repo as reúne num marketplace (`kamoca`) para que:
+The commit skills started as loose files in `~/.claude`, with no versions. This repo lists the plugins in the `kamoca` marketplace, with one repo for each plugin in the [kamoca-labs](https://github.com/kamoca-labs) organization. This gives you the following:
 
-- tudo fique versionado e revisado por PR/MR, como qualquer código;
-- cada domínio (git, craft, docker) evolua e seja instalado de forma independente;
-- as regras de histórico (commit semântico, body explicando o porquê, nada direto na main) e as boas práticas (ATDD, refactor) valham em **todos** os projetos, do trabalho e pessoais.
+- Everything is versioned and reviewed in a PR/MR, like any other code.
+- Each domain (git, craft, docker) evolves and installs on its own.
+- The history rules (semantic commit, body that explains why, nothing directly on main) and the good practices (ATDD, refactor) apply in **all** projects, at work and personal.
 
-Aqui só entra o que é geral. O que é de um lugar só (a integração com o GitLab do trabalho, por exemplo) fica num marketplace próprio e se combina com estes pelos argumentos dos comandos.
+Only general content belongs here. Content that belongs to one place only (for example, a work GitLab integration) stays in its own marketplace. You combine it with these plugins through the command arguments.
 
-## Catálogo
+## Catalog
 
-| Plugin | Comando | O que faz |
+| Plugin | Command | What it does |
 |---|---|---|
-| [`git`](plugins/git/README.md) | `/git:commit` | Commits semânticos atômicos com body, em branch dedicada, e push |
-| | `/git:mr` | Abre o PR/MR pelo MCP ou pela CLI, com revisores, draft e destino, sem squash e sem menção a IA |
-| | `/git:review` | Revisa o PR/MR de outra pessoa pelo link, com confirmação antes de publicar |
-| | `/git:ci` | Diagnostica o CI que falhou e roda de novo as falhas intermitentes |
-| | `/git:daily` | Escreve a daily com os commits locais e os PR/MR do GitHub e do GitLab |
-| | `/git:release` | Versão, changelog, tag e release na forja |
-| | `/git:main` | Autoriza commit e push na main, com justificativa e auditoria |
-| | `/git:sync` | Depois do merge, volta para a main atualizada e apaga a branch mergeada |
-| | `/git:split` | Quebra uma branch grande em branches encadeadas, uma por assunto |
-| | `/git:undo` | Desfaz commit, amend, rebase ou reset pelo reflog, com backup |
-| [`craft`](plugins/craft/README.md) | `/craft:craft` | Regra raiz (menos código é melhor do que mais código) e triagem de SOLID, KISS, YAGNI, DRY e Clean Code; carrega só a skill de cada princípio com sinal. O hook dispara isso sozinho quando a suíte fica verde |
-| | `/craft:setup` | Prepara um projeto novo: teste, linter com limites de tamanho e complexidade, scripts `test` e `lint` |
-| | `/craft:atdd` | Conduz o fluxo ATDD de 7 passos, da especificação Given/When/Then ao verde final, com tarefas por cenário e meta que segura o fim do turno até a condição valer |
-| | `/craft:style` | Modo estilo para mudança só visual: itera a tela com o impeccable, sem teste antes, e manda o comportamento para o `/craft:atdd` |
-| | `/craft:memory` | Memória de longo prazo do projeto em `.claude/memory/`, no repo. O hook carrega o catálogo em toda sessão e nega memória fora do projeto |
-| | (automático) | Hook carrega em toda sessão a skill `craft:ste`: respostas e textos no padrão ASD-STE100 |
-| [`docker`](plugins/docker/README.md) | `/docker:docker` | Entrada única: roteia para create ou tune, com sub-skills privadas compartilhadas entre os dois |
-| | `/docker:create` | Imagens na versão mais nova, nginx com HTTP/2 e HTTP/3; dev com hot reload e UID/GID do host, prod enxuto em `./deploy` com `.env` próprio, defaults, volumes em pasta local, nomes padronizados |
-| | `/docker:tune` | Põe o Docker existente nas regras e otimiza com medição, uma mudança por vez |
+| [`git`](https://github.com/kamoca-labs/git#readme) | `/git:commit` | Atomic semantic commits with a body, on a dedicated branch, then push |
+| | `/git:mr` | Opens the PR/MR through the MCP or the CLI, with reviewers, draft and target. No squash and no AI mention |
+| | `/git:review` | Reviews the PR/MR of another person from the link, and asks for confirmation before it publishes |
+| | `/git:ci` | Diagnoses a failed CI and runs the intermittent failures again |
+| | `/git:daily` | Writes the daily update from the local commits and the PR/MR on GitHub and GitLab |
+| | `/git:release` | Version, changelog, tag and release on the forge |
+| | `/git:main` | Allows commit and push on main, with a justification and an audit |
+| | `/git:sync` | After the merge, goes back to the updated main and deletes the merged branch |
+| | `/git:split` | Splits a large branch into chained branches, one for each subject |
+| | `/git:undo` | Undoes a commit, amend, rebase or reset through the reflog, with a backup |
+| [`craft`](https://github.com/kamoca-labs/craft#readme) | `/craft:craft` | Root rule (less code is better than more code) and triage of SOLID, KISS, YAGNI, DRY and Clean Code. It loads only the skill of each principle with a signal. The hook runs it automatically when the suite turns green |
+| | `/craft:setup` | Prepares a new project: tests, a linter with size and complexity limits, and the `test` and `lint` scripts |
+| | `/craft:atdd` | Runs the 7-step ATDD workflow, from the Given/When/Then specification to the final green. It has tasks for each scenario and a goal that holds the end of the turn until the condition is true |
+| | `/craft:style` | Style mode for visual-only changes: iterates the screen with impeccable, with no test first, and sends behavior to `/craft:atdd` |
+| | `/craft:memory` | Long-term project memory in `.claude/memory/`, inside the repo. The hook loads the catalog in every session and denies memory outside the project |
+| | (automatic) | A hook loads the `craft:ste` skill in every session: replies and texts follow ASD-STE100 |
+| [`docker`](https://github.com/kamoca-labs/docker#readme) | `/docker:docker` | Single entry point: routes to create or tune, with private sub-skills that both share |
+| | `/docker:create` | Newest image versions, nginx with HTTP/2 and HTTP/3. Dev has hot reload and the host UID/GID. Prod is lean, in `./deploy`, with its own `.env`, defaults, volumes in a local folder and standard names |
+| | `/docker:tune` | Puts an existing Docker setup under the rules and optimizes it with measurements, one change at a time |
 
-Os comandos se combinam nos argumentos, inclusive com os de outros marketplaces:
+The commands combine in the arguments, also with the commands of other marketplaces:
 
 ```
-/git:commit /<plugin>:<comando> @fulano
+/git:commit /<plugin>:<command> @reviewer
 ```
 
-## Como as regras são garantidas
+## How the rules are enforced
 
-| Camada | Papel |
+| Layer | Role |
 |---|---|
-| **Skill** (`skills/*/SKILL.md`) | Diz ao Claude **como** fazer: passos, formato, modelos |
-| **Hook** (`hooks/rules/<regra>.ts`) | **Nega** a chamada que viola a regra, antes de executar |
+| **Skill** (`skills/*/SKILL.md`) | Tells Claude **how** to work: steps, format, templates |
+| **Hook** (`hooks/rules/<rule>.ts`) | **Denies** the call that violates the rule, before it runs |
 
-Cada regra é um arquivo, com hook próprio no `hooks.json` e teste próprio em `hooks/tests/<regra>.test.ts`. Quando uma chamada viola várias regras, todas aparecem de uma vez, cada uma com seu prefixo (`[git:semantic-title]`, `[git:commit-body]`).
+Each rule is one file, with its own hook in `hooks.json` and its own test in `hooks/tests/<rule>.test.ts`. When a call violates several rules, all of them appear at once. Each one has its own prefix (`[git:semantic-title]`, `[git:commit-body]`).
 
-O hook usa o campo `if:` do Claude Code (`Bash(git commit *)`, `Bash(git push *)`) para só rodar quando interessa. Como esse filtro é best-effort, cada regra confere de novo se o comando é mesmo um commit ou um push.
+The hook uses the `if:` field of Claude Code (`Bash(git commit *)`, `Bash(git push *)`) to run only when needed. This filter is best-effort, so each rule checks again that the command is really a commit or a push.
 
-Autorizações como `/git:main` são lidas do **último prompt digitado por você** no transcript da sessão. O Claude não consegue se autorizar sozinho.
+Authorizations such as `/git:main` are read from the **last prompt that you typed** in the session transcript. Claude cannot authorize itself.
 
-Todo hook é testado em três níveis:
+Every hook has tests on three levels:
 
-| Nível | Arquivo | Garante |
+| Level | File | What it guarantees |
 |---|---|---|
-| Regra | `tests/<regra>.test.ts` | a regra isolada nega e libera o que deve |
-| Caso de uso | `tests/cases.json` | o cenário real (comando, branch, prompt) passa por **todos** os hooks e só as regras esperadas negam |
-| Estrutura | `tests/structure.test.ts` | nenhuma regra fica sem hook dedicado ou sem teste |
+| Rule | `tests/<rule>.test.ts` | The isolated rule denies and allows what it must |
+| Use case | `tests/cases.json` | The real scenario (command, branch, prompt) goes through **all** hooks, and only the expected rules deny |
+| Structure | `tests/structure.test.ts` | No rule is left without a dedicated hook or a test |
 
-Cada negação em uso real é gravada em `~/.claude/hook-cases.jsonl` já no formato do `cases.json`. Quando um hook nega o que não devia, ou deixa passar o que devia negar, o caso entra no `cases.json` e vira teste. Veja [transformar caso real em teste](USAGE.md#transformar-caso-real-em-teste).
+Each denial in real use is saved to `~/.claude/hook-cases.jsonl`, already in the `cases.json` format. A hook can deny what it should allow, or allow what it should deny. In both cases, the case goes into `cases.json` and becomes a test. See [turn a real case into a test](USAGE.md#turn-a-real-case-into-a-test).
 
-## Estrutura do repo
+## Plugin structure
+
+This repo has only the `.claude-plugin/marketplace.json` file. It points to one repo for each plugin in `kamoca-labs/<plugin>`. Each plugin has the same structure, at the root of its repo:
 
 ```
-.claude-plugin/marketplace.json     lista os plugins do marketplace "kamoca"
-plugins/
-├── git/
-│   ├── .claude-plugin/plugin.json
-│   ├── skills/{commit,mr,review,ci,daily,release,main,sync,split,undo}/SKILL.md
-│   ├── skills/forge/SKILL.md  sub-skill privada: forja, projeto e ferramenta
-│   └── hooks/
-│       ├── hooks.json           um hook por regra
-│       ├── lib.ts               leitura do payload, mensagem, prompt
-│       ├── rules/<regra>.ts     uma regra por arquivo
-│       └── tests/
-│           ├── <regra>.test.ts  um teste por regra
-│           ├── cases.json       casos de uso de ponta a ponta
-│           ├── cases.test.ts    roda o cases.json contra o hooks.json
-│           ├── capture.test.ts  negação real vira caso
-│           └── structure.test.ts
-├── craft/
-│   ├── .claude-plugin/plugin.json
-│   ├── skills/craft/SKILL.md      triagem dos princípios
-│   ├── skills/atdd/SKILL.md
-│   ├── skills/<princípio>/SKILL.md  um por princípio
-│   └── hooks/                   mesma estrutura do git
-└── docker/
-    ├── .claude-plugin/plugin.json
-    ├── skills/docker/SKILL.md     hub: roteia para create ou tune
-    ├── skills/{create,tune}/SKILL.md
-    ├── skills/<assunto>/SKILL.md  sub-skills privadas (user-invocable: false)
-    └── hooks/                   mesma estrutura do git
+.claude-plugin/plugin.json
+skills/<command>/SKILL.md        one for each command, plus the private sub-skills
+hooks/
+├── hooks.json                   one hook for each rule
+├── lib.ts                       payload reading, message, prompt
+├── rules/<rule>.ts              one rule for each file
+└── tests/
+    ├── <rule>.test.ts           one test for each rule
+    ├── cases.json               end-to-end use cases
+    ├── cases.test.ts            runs cases.json against hooks.json
+    ├── capture.test.ts          a real denial becomes a case
+    └── structure.test.ts
 ```
 
-## Documentação
+## Documentation
 
-| Documento | Conteúdo |
+| Document | Content |
 |---|---|
-| [USAGE.md](USAGE.md) | Atualizar, testar, criar regra nova, transformar caso real em teste, combinar comandos, solução de problemas |
-| [plugins/git/README.md](plugins/git/README.md) | Catálogo e regras do plugin `git` |
-| [plugins/git/USAGE.md](plugins/git/USAGE.md) | Casos de uso do `git`, com exemplos de mensagens aceitas e negadas |
-| [plugins/craft/README.md](plugins/craft/README.md) | Comandos, skills por princípio, hook de refactor e executores de teste reconhecidos |
-| [plugins/craft/USAGE.md](plugins/craft/USAGE.md) | ATDD em feature e bug, refactor automático e sob demanda |
-| [plugins/docker/README.md](plugins/docker/README.md) | Comandos e regras do plugin `docker` |
-| [plugins/docker/USAGE.md](plugins/docker/USAGE.md) | Criar, subir dev e prod, ajustar com medição, negações dos hooks |
+| [USAGE.md](USAGE.md) | Update, test, create a new rule, turn a real case into a test, combine commands, troubleshooting |
+| [git/README.md](https://github.com/kamoca-labs/git#readme) | Catalog and rules of the `git` plugin |
+| [git/USAGE.md](https://github.com/kamoca-labs/git/blob/main/USAGE.md) | Use cases of `git`, with examples of accepted and denied messages |
+| [craft/README.md](https://github.com/kamoca-labs/craft#readme) | Commands, skills for each principle, refactor hook and the supported test runners |
+| [craft/USAGE.md](https://github.com/kamoca-labs/craft/blob/main/USAGE.md) | ATDD in a feature and in a bug, automatic and on-demand refactor |
+| [docker/README.md](https://github.com/kamoca-labs/docker#readme) | Commands and rules of the `docker` plugin |
+| [docker/USAGE.md](https://github.com/kamoca-labs/docker/blob/main/USAGE.md) | Create, start dev and prod, tune with measurements, hook denials |
