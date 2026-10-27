@@ -112,7 +112,7 @@ Only the first `/command` of the line runs. The other commands become arguments,
 |---|---|---|
 | `/git:commit` does not appear | The plugin was installed in the current session | Open a new session |
 | I changed the repo and nothing changed | The plugin runs from the cached copy | [Update the version](#update-after-editing) |
-| `[git:<rule>] ...` denied the commit | The message violates a rule | See the [denied messages](https://github.com/kamoca-labs/git/blob/main/USAGE.md#quando-o-hook-nega) |
+| `[git:<rule>] ...` denied the commit | The message violates a rule | See the [denied messages](https://github.com/kamoca-labs/git/blob/main/USAGE.md#when-the-hook-denies) |
 | A hook denied something that should pass | False positive of the rule | [Turn the case into a test](#turn-a-real-case-into-a-test) and fix it |
 | `Marketplace name impersonates...` | `claude-plugins` is a reserved name | The marketplace name is `kamoca`. The repo is `kamoca-labs/marketplace` |
 | Commit denied by another hook (`[commit-hook]`) | A hook of the open project denied it, not a hook of this repo | Run the command yourself with `!` in the prompt |
