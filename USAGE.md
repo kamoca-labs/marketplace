@@ -1,58 +1,58 @@
-# Uso do marketplace
+# Marketplace usage
 
-Como manter, testar e combinar os plugins. Cada plugin vive no repo dele em `kamoca-labs/<plugin>`, e os caminhos abaixo valem a partir da raiz desse repo. A instalação está no [README](README.md#instalação). Os casos de uso de cada comando ficam no USAGE do plugin.
+This guide explains how to maintain, test and combine the plugins. Each plugin lives in its own repo, `kamoca-labs/<plugin>`. The paths below start at the root of that repo. The installation steps are in the [README](README.md#installation). The use cases of each command are in the USAGE file of the plugin.
 
-## Sumário
+## Contents
 
-- [Atualizar depois de editar](#atualizar-depois-de-editar)
-- [Testar sem instalar](#testar-sem-instalar)
-- [Rodar os testes dos hooks](#rodar-os-testes-dos-hooks)
-- [Criar uma regra nova](#criar-uma-regra-nova)
-- [Transformar caso real em teste](#transformar-caso-real-em-teste)
-- [Combinar comandos](#combinar-comandos)
-- [Fluxo do dia a dia](#fluxo-do-dia-a-dia)
-- [Solução de problemas](#solução-de-problemas)
-- [Casos de uso por plugin](#casos-de-uso-por-plugin)
+- [Update after editing](#update-after-editing)
+- [Test without installing](#test-without-installing)
+- [Run the hook tests](#run-the-hook-tests)
+- [Create a new rule](#create-a-new-rule)
+- [Turn a real case into a test](#turn-a-real-case-into-a-test)
+- [Combine commands](#combine-commands)
+- [Daily workflow](#daily-workflow)
+- [Troubleshooting](#troubleshooting)
+- [Use cases for each plugin](#use-cases-for-each-plugin)
 
-## Atualizar depois de editar
+## Update after editing
 
-O Claude Code copia cada plugin para `~/.claude/plugins/cache/` **por versão**. Editar o repo não muda nada até você atualizar:
+Claude Code copies each plugin to `~/.claude/plugins/cache/` **for each version**. Editing the repo changes nothing until you update:
 
-1. Suba o `version` em `.claude-plugin/plugin.json` do repo do plugin (ex.: `0.1.0` para `0.2.0`).
-2. Rode `claude plugin marketplace update kamoca`.
-3. Rode `claude plugin update <nome>@kamoca`.
-4. Abra uma sessão nova.
+1. Raise the `version` in `.claude-plugin/plugin.json` of the plugin repo (example: `0.1.0` to `0.2.0`).
+2. Run `claude plugin marketplace update kamoca`.
+3. Run `claude plugin update <name>@kamoca`.
+4. Open a new session.
 
-## Testar sem instalar
+## Test without installing
 
-Para experimentar uma mudança antes de subir a versão:
+To try a change before you raise the version:
 
 ```bash
 claude --plugin-dir ~/Developer/kamoca-labs/git
 ```
 
-## Rodar os testes dos hooks
+## Run the hook tests
 
-Tudo com `node:test`, sem dependência:
+All tests use `node:test`, with no dependencies:
 
 ```bash
-node --test 'hooks/tests/*.test.ts'                       # todos
-node --test hooks/tests/commit-body.test.ts              # uma regra
-node --test hooks/tests/cases.test.ts                    # casos de uso
+node --test 'hooks/tests/*.test.ts'                       # all
+node --test hooks/tests/commit-body.test.ts              # one rule
+node --test hooks/tests/cases.test.ts                    # use cases
 ```
 
-Os três níveis (regra, caso de uso, estrutura) estão descritos no [README](README.md#como-as-regras-são-garantidas). O teste de estrutura falha se uma regra ficar sem hook no `hooks.json` ou sem `<regra>.test.ts`.
+The [README](README.md#how-the-rules-are-enforced) describes the three levels (rule, use case, structure). The structure test fails if a rule has no hook in `hooks.json` or no `<rule>.test.ts`.
 
-## Criar uma regra nova
+## Create a new rule
 
-1. **Teste primeiro** em `hooks/tests/<regra>.test.ts`, usando o `helpers.ts` da pasta, e confirme que ele falha.
-2. **A regra** em `hooks/rules/<regra>.ts`: lê o payload com `readInput()`, nega com `deny('<regra>', 'motivo')` e termina sem fazer nada quando não se aplica.
-3. **O hook** no `hooks/hooks.json`: uma entrada própria, com `if:` (Bash) ou `matcher` (MCP) e `statusMessage` `<plugin>:<regra>: ...`.
-4. **Os casos de uso** no `hooks/tests/cases.json`: pelo menos um cenário que a regra nega e um que ela libera. Ajuste o `deny` dos casos existentes que a regra nova afeta.
-5. **A documentação**: uma linha na tabela de regras do README do plugin e o caso de negação no USAGE.
-6. Suba o `version` e [atualize](#atualizar-depois-de-editar).
+1. **Write the test first** in `hooks/tests/<rule>.test.ts`. Use the `helpers.ts` of the folder. Confirm that the test fails.
+2. **Write the rule** in `hooks/rules/<rule>.ts`. It reads the payload with `readInput()`, denies with `deny('<rule>', 'reason')`, and ends with no action when it does not apply.
+3. **Add the hook** to `hooks/hooks.json`: one entry of its own, with `if:` (Bash) or `matcher` (MCP) and a `statusMessage` `<plugin>:<rule>: ...`.
+4. **Add the use cases** to `hooks/tests/cases.json`: at least one scenario that the rule denies and one that it allows. Adjust the `deny` of the existing cases that the new rule affects.
+5. **Update the documentation**: one line in the rules table of the plugin README, and the denial case in the USAGE file.
+6. Raise the `version` and [update](#update-after-editing).
 
-Esqueleto de uma regra:
+Skeleton of a rule:
 
 ```ts
 import { commitMessage, deny, readInput } from '../lib.ts'
@@ -60,64 +60,64 @@ import { commitMessage, deny, readInput } from '../lib.ts'
 const message = commitMessage(readInput())
 
 if (message && /wip/i.test(message.subject)) {
-  deny('no-wip', 'Commit WIP não entra no histórico.')
+  deny('no-wip', 'A WIP commit does not enter the history.')
 }
 ```
 
-## Transformar caso real em teste
+## Turn a real case into a test
 
-Cada negação feita pelos hooks em uso real vira uma linha em `~/.claude/hook-cases.jsonl`, já no formato do `cases.json`:
+Each denial that the hooks make in real use becomes a line in `~/.claude/hook-cases.jsonl`, already in the `cases.json` format:
 
 ```json
-{"plugin":"git","description":"Título fora do padrão semântico ...","origin":"real","branch":"feat/x","prompt":"/git:commit","tool_name":"Bash","tool_input":{"command":"..."},"deny":["semantic-title"]}
+{"plugin":"git","description":"Title outside the semantic format ...","origin":"real","branch":"feat/x","prompt":"/git:commit","tool_name":"Bash","tool_input":{"command":"..."},"deny":["semantic-title"]}
 ```
 
-Ver as últimas negações:
+See the last denials:
 
 ```bash
 tail -n 5 ~/.claude/hook-cases.jsonl | node -e 'require("readline").createInterface({input:process.stdin}).on("line",l=>{const c=JSON.parse(l);console.log(c.plugin, c.deny, c.description)})'
 ```
 
-| Situação | O que fazer |
+| Situation | What to do |
 |---|---|
-| **Negou certo** | nada; se o cenário for novo, vale guardar como regressão |
-| **Falso positivo** (negou o que devia passar) | copie a linha para `hooks/tests/cases.json`, troque `deny` para `[]`, ajuste `origin` para `real <data>` e corrija a regra até o caso passar |
-| **Falso negativo** (deixou passar o que devia negar) | não há linha capturada; escreva o caso à mão no `cases.json` com o `deny` esperado e corrija a regra |
+| **Correct denial** | Do nothing. If the scenario is new, save it as a regression test |
+| **False positive** (denied what should pass) | Copy the line to `hooks/tests/cases.json`, change `deny` to `[]`, set `origin` to `real <date>`, and fix the rule until the case passes |
+| **False negative** (allowed what should be denied) | No line is captured. Write the case by hand in `cases.json` with the expected `deny`, and fix the rule |
 
-O campo `plugin` só serve para saber em qual `cases.json` colar; o teste ignora. No `craft`, que injeta contexto em vez de negar, a linha traz `inject` no lugar de `deny` e o fluxo é o mesmo. O primeiro caso real do repo é o falso positivo do `$VAR` (`origin: "real 2026-10-06"` no `cases.json` do `git`).
+The `plugin` field only shows which `cases.json` receives the line. The test ignores it. The `craft` plugin injects context instead of a denial. For `craft`, the line has `inject` in place of `deny`, and the workflow is the same. The first real case in the repo is the false positive of `$VAR` (`origin: "real 2026-10-06"` in the `cases.json` of `git`).
 
-## Combinar comandos
+## Combine commands
 
-Só o primeiro `/comando` da linha é invocado. Os outros viram argumentos, e a skill invocada repassa cada um ao comando correspondente.
+Only the first `/command` of the line runs. The other commands become arguments, and the skill that runs passes each one to the matching command.
 
-| Você digita | O que acontece |
+| You type | What happens |
 |---|---|
-| `/git:commit` | commita e faz push na branch atual (cria uma branch se estiver na main) |
-| `/git:commit /<plugin>:<comando> @fulano` | commita, faz push e invoca o comando do outro plugin com o resto dos argumentos |
-| `/git:commit /git:main` | commit direto na main, com justificativa e auditoria |
-| `/git:split /<plugin>:<comando>` | quebra a branch e invoca o comando para cada parte, na ordem |
+| `/git:commit` | Commits and pushes on the current branch (creates a branch if you are on main) |
+| `/git:commit /<plugin>:<command> @reviewer` | Commits, pushes, and runs the command of the other plugin with the remaining arguments |
+| `/git:commit /git:main` | Commits directly on main, with a justification and an audit |
+| `/git:split /<plugin>:<command>` | Splits the branch and runs the command for each part, in order |
 
-## Fluxo do dia a dia
+## Daily workflow
 
 ```
-/craft:atdd recusar anexo acima de 10 MB      especificação, teste vermelho, verde e refactor
-/git:commit                                    cria a branch, commita e faz push
-... revisão e merge ...
-/git:sync                                      volta para a main atualizada e apaga a branch
+/craft:atdd reject attachment above 10 MB      specification, red test, green and refactor
+/git:commit                                    creates the branch, commits and pushes
+... review and merge ...
+/git:sync                                      goes back to the updated main and deletes the branch
 ```
 
-## Solução de problemas
+## Troubleshooting
 
-| Sintoma | Causa | Solução |
+| Symptom | Cause | Solution |
 |---|---|---|
-| `/git:commit` não aparece | plugin instalado na sessão atual | abra uma sessão nova |
-| Mudei o repo e nada mudou | o plugin roda da cópia em cache | [atualize a versão](#atualizar-depois-de-editar) |
-| `[git:<regra>] ...` negou o commit | a mensagem viola uma regra | veja [mensagens negadas](https://github.com/kamoca-labs/git/blob/main/USAGE.md#quando-o-hook-nega) |
-| Hook negou algo que devia passar | falso positivo da regra | [transforme o caso em teste](#transformar-caso-real-em-teste) e corrija |
-| `Marketplace name impersonates...` | `claude-plugins` é um nome reservado | o marketplace se chama `kamoca`; o repo é `kamoca-labs/marketplace` |
-| Commit negado por outro hook (`[commit-hook]`) | hook do projeto aberto na sessão, não deste repo | rode o comando você mesmo com `!` no prompt |
+| `/git:commit` does not appear | The plugin was installed in the current session | Open a new session |
+| I changed the repo and nothing changed | The plugin runs from the cached copy | [Update the version](#update-after-editing) |
+| `[git:<rule>] ...` denied the commit | The message violates a rule | See the [denied messages](https://github.com/kamoca-labs/git/blob/main/USAGE.md#quando-o-hook-nega) |
+| A hook denied something that should pass | False positive of the rule | [Turn the case into a test](#turn-a-real-case-into-a-test) and fix it |
+| `Marketplace name impersonates...` | `claude-plugins` is a reserved name | The marketplace name is `kamoca`. The repo is `kamoca-labs/marketplace` |
+| Commit denied by another hook (`[commit-hook]`) | A hook of the open project denied it, not a hook of this repo | Run the command yourself with `!` in the prompt |
 
-## Casos de uso por plugin
+## Use cases for each plugin
 
 - [git/USAGE.md](https://github.com/kamoca-labs/git/blob/main/USAGE.md)
 - [craft/USAGE.md](https://github.com/kamoca-labs/craft/blob/main/USAGE.md)

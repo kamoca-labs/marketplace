@@ -1,6 +1,6 @@
 {
   "name": "kamoca",
-  "description": "Plugins do Claude Code da kamoca, organizados por domínio (git, craft, docker).",
+  "description": "Claude Code plugins from kamoca, grouped by domain (git, craft, docker).",
   "owner": {
     "name": "Kauan Morinel Calheiro"
   },
@@ -11,7 +11,7 @@
         "source": "github",
         "repo": "kamoca-labs/git"
       },
-      "description": "Commits semânticos atômicos com body, branch obrigatória, main só com /git:main auditado."
+      "description": "Atomic semantic commits with a body. A branch is required. Commits to main need an audited /git:main."
     },
     {
       "name": "craft",
@@ -19,7 +19,7 @@
         "source": "github",
         "repo": "kamoca-labs/craft"
       },
-      "description": "Fluxo ATDD e refactor guiado por princípios (SOLID, KISS, YAGNI, DRY, Clean Code), uma skill por princípio."
+      "description": "ATDD workflow and refactor guided by principles (SOLID, KISS, YAGNI, DRY, Clean Code), with one skill for each principle."
     },
     {
       "name": "docker",
@@ -27,7 +27,7 @@
         "source": "github",
         "repo": "kamoca-labs/docker"
       },
-      "description": "Ambiente Docker de dev (hot reload) e prod (./deploy, imagem enxuta) com regras garantidas por hook; ajuste com medição."
+      "description": "Docker environment for dev (hot reload) and prod (./deploy, lean image). Hooks enforce the rules. Tuning uses measurements."
     }
   ]
 }
