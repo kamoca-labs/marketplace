@@ -52,9 +52,10 @@ Only general content belongs here. Content that belongs to one place only (for e
 | | `/craft:style` | Style mode for visual-only changes: iterates the screen with impeccable, with no test first, and sends behavior to `/craft:atdd` |
 | | `/craft:memory` | Long-term project memory in `.claude/memory/`, inside the repo. The hook loads the catalog in every session and denies memory outside the project |
 | | (automatic) | A hook loads the `craft:ste` skill in every session: replies and texts follow ASD-STE100 |
-| [`docker`](https://github.com/kamoca-labs/docker#readme) | `/docker:docker` | Single entry point: routes to create or tune, with private sub-skills that both share |
-| | `/docker:create` | Newest image versions, nginx with HTTP/2 and HTTP/3. Dev has hot reload and the host UID/GID. Prod is lean, in `./deploy`, with its own `.env`, defaults, volumes in a local folder and standard names |
+| [`docker`](https://github.com/kamoca-labs/docker#readme) | `/docker:docker` | Single entry point: routes to create, tune or ci, with private sub-skills shared between them |
+| | `/docker:create` | Newest image versions, nginx with HTTP/2 and HTTP/3. Base, dev and prod compose files in the root and one Dockerfile per service in `./docker`. Dev with hot reload and the host UID/GID. Lean prod with `.env.prod`, defaults, volumes in a local folder and standard names |
 | | `/docker:tune` | Puts an existing Docker setup under the rules and optimizes it with measurements, one change at a time |
+| | `/docker:ci` | Probes the registry, the runner and the server, and builds the CI/CD on GitLab or GitHub with the strategy that fits (registry, ssh-load, remote-build or server-build) |
 
 The commands combine in the arguments, also with the commands of other marketplaces:
 
