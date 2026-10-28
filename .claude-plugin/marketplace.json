@@ -27,7 +27,7 @@
         "source": "github",
         "repo": "kamoca-labs/docker"
       },
-      "description": "Docker environment for dev (hot reload) and prod (./deploy, lean image). Hooks enforce the rules. Tuning uses measurements."
+      "description": "Docker environment with base, dev and prod compose files and one Dockerfile per service in ./docker. Hooks enforce the rules. Tuning uses measurements. CI/CD on GitLab or GitHub."
     }
   ]
 }
