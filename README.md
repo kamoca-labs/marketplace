@@ -8,6 +8,7 @@
 - [How the rules are enforced](#how-the-rules-are-enforced)
 - [Plugin structure](#plugin-structure)
 - [Documentation](#documentation)
+- [Release notes](CHANGELOG.md)
 
 ## Installation
 
