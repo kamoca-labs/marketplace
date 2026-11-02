@@ -15,6 +15,7 @@
 claude plugin marketplace add kamoca-labs/marketplace
 claude plugin install git@kamoca
 claude plugin install craft@kamoca
+claude plugin install design@kamoca
 claude plugin install docker@kamoca
 ```
 
@@ -27,7 +28,7 @@ This is a personal marketplace of [Claude Code](https://code.claude.com) plugins
 The commit skills started as loose files in `~/.claude`, with no versions. This repo lists the plugins in the `kamoca` marketplace, with one repo for each plugin in the [kamoca-labs](https://github.com/kamoca-labs) organization. This gives you the following:
 
 - Everything is versioned and reviewed in a PR/MR, like any other code.
-- Each domain (git, craft, docker) evolves and installs on its own.
+- Each domain (git, craft, design, docker) evolves and installs on its own.
 - The history rules (semantic commit, body that explains why, nothing directly on main) and the good practices (ATDD, refactor) apply in **all** projects, at work and personal.
 
 Only general content belongs here. Content that belongs to one place only (for example, a work GitLab integration) stays in its own marketplace. You combine it with these plugins through the command arguments.
@@ -49,9 +50,14 @@ Only general content belongs here. Content that belongs to one place only (for e
 | [`craft`](https://github.com/kamoca-labs/craft#readme) | `/craft:craft` | Root rule (less code is better than more code) and triage of SOLID, KISS, YAGNI, DRY and Clean Code. It loads only the skill of each principle with a signal. The hook runs it automatically when the suite turns green |
 | | `/craft:setup` | Prepares a new project: tests, a linter with size and complexity limits, and the `test` and `lint` scripts |
 | | `/craft:atdd` | Runs the 7-step ATDD workflow, from the Given/When/Then specification to the final green. It has tasks for each scenario and a goal that holds the end of the turn until the condition is true |
-| | `/craft:style` | Style mode for visual-only changes: iterates the screen with impeccable, with no test first, and sends behavior to `/craft:atdd` |
 | | `/craft:memory` | Long-term project memory in `.claude/memory/`, inside the repo. The hook loads the catalog in every session and denies memory outside the project |
 | | (automatic) | A hook loads the `craft:ste` skill in every session: replies and texts follow ASD-STE100 |
+| [`design`](https://github.com/kamoca-labs/design#readme) | `/design:setup` | Records DESIGN.md, semantic color pairs, typography, shared breakpoints and existing patterns |
+| | `/design:design` | Creates a responsive mockup with applicable screen states; product implementation starts after explicit approval |
+| | `/design:style` | Visual-only iteration, migrated from craft:style in craft 0.16.0; behavior still follows craft:atdd |
+| | `/design:mockup`, `/design:states` | Reviewable artifacts or Figma/FigCraft drafts, alternate screen/control states and responsive variants |
+| | `/design:system`, `/design:review` | Consolidates patterns and checks the rendered interface; functional tests do not assert decorative UI |
+| | `/design:connect` | Optional Figma/FigCraft MCP integration |
 | [`docker`](https://github.com/kamoca-labs/docker#readme) | `/docker:docker` | Single entry point: routes to create or tune, with private sub-skills that both share |
 | | `/docker:create` | Newest image versions, nginx with HTTP/2 and HTTP/3. Dev has hot reload and the host UID/GID. Prod is lean, in `./deploy`, with its own `.env`, defaults, volumes in a local folder and standard names |
 | | `/docker:tune` | Puts an existing Docker setup under the rules and optimizes it with measurements, one change at a time |
@@ -114,4 +120,5 @@ hooks/
 | [craft/README.md](https://github.com/kamoca-labs/craft#readme) | Commands, skills for each principle, refactor hook and the supported test runners |
 | [craft/USAGE.md](https://github.com/kamoca-labs/craft/blob/main/USAGE.md) | ATDD in a feature and in a bug, automatic and on-demand refactor |
 | [docker/README.md](https://github.com/kamoca-labs/docker#readme) | Commands and rules of the `docker` plugin |
+| [design/README.md](https://github.com/kamoca-labs/design#readme) | Design setup, mockup approval, complete states, responsive verification and upstream updates |
 | [docker/USAGE.md](https://github.com/kamoca-labs/docker/blob/main/USAGE.md) | Create, start dev and prod, tune with measurements, hook denials |
