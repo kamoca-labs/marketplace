@@ -1,6 +1,6 @@
 {
   "name": "kamoca",
-  "description": "Claude Code plugins from kamoca, grouped by domain (git, craft, docker).",
+  "description": "Claude Code plugins from kamoca, grouped by domain (git, craft, design, docker).",
   "owner": {
     "name": "Kauan Morinel Calheiro"
   },
@@ -20,6 +20,14 @@
         "repo": "kamoca-labs/craft"
       },
       "description": "ATDD workflow and refactor guided by principles (SOLID, KISS, YAGNI, DRY, Clean Code), with one skill for each principle."
+    },
+    {
+      "name": "design",
+      "source": {
+        "source": "github",
+        "repo": "kamoca-labs/design"
+      },
+      "description": "Design systems, alternating background tokens, responsive mockups and complete screen states. Implementation follows explicit mockup approval. Includes pinned Impeccable guidance and optional Figma/FigCraft connectors."
     },
     {
       "name": "docker",
