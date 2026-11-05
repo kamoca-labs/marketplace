@@ -9,6 +9,7 @@ This repository is an unversioned catalog. Entries use dates and commit evidence
 - Describe entry skills and focused references instead of the removed per-principle skills.
 - List the Craft audit command and the Docker CI/CD command.
 - Document the current root-level Docker compose layout and Craft session rules.
+- Align the Docker catalog description with the published compose layout and CI/CD entry point.
 
 ## 2026-11-02 — Design catalog entry
 
