@@ -19,7 +19,7 @@
         "source": "github",
         "repo": "kamoca-labs/craft"
       },
-      "description": "ATDD workflow and refactor guided by principles (SOLID, KISS, YAGNI, DRY, Clean Code), with one skill for each principle."
+      "description": "ATDD, repository audits and refactor guided by SOLID, KISS, YAGNI, DRY and Clean Code, with entry skills that load focused reference files."
     },
     {
       "name": "design",

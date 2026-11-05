@@ -2,6 +2,14 @@
 
 This repository is an unversioned catalog. Entries use dates and commit evidence rather than invented plugin version numbers. Individual plugin releases belong to their own repositories.
 
+## Unreleased — Plugin layout migration
+
+### Improvements
+
+- Describe entry skills and focused references instead of the removed per-principle skills.
+- List the Craft audit command and the Docker CI/CD command.
+- Document the current root-level Docker compose layout and Craft session rules.
+
 ## 2026-11-02 — Design catalog entry
 
 ### New features
