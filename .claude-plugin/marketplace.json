@@ -19,7 +19,7 @@
         "source": "github",
         "repo": "kamoca-labs/craft"
       },
-      "description": "ATDD, repository audits and refactor guided by SOLID, KISS, YAGNI, DRY and Clean Code, with entry skills that load focused reference files."
+      "description": "Requests as linear lists of verified items, ATDD, repository audits and refactor guided by SOLID, KISS, YAGNI, DRY and Clean Code, with entry skills that load focused reference files."
     },
     {
       "name": "design",
