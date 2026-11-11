@@ -6,6 +6,7 @@ This repository is an unversioned catalog. Entries use dates and commit evidence
 
 ### Improvements
 
+- Describe the activity flow of craft 0.18.0: a request becomes a linear list of verified items in `.claude/local/activities/`, held by a Stop hook. The task list and the META goal of craft 0.17.0 are gone.
 - Describe entry skills and focused references instead of the removed per-principle skills.
 - List the Craft audit command and the Docker CI/CD command.
 - Document the current root-level Docker compose layout and Craft session rules.

@@ -48,12 +48,12 @@ Only general content belongs here. Content that belongs to one place only (for e
 | | `/git:sync` | After the merge, goes back to the updated main and deletes the merged branch |
 | | `/git:split` | Splits a large branch into chained branches, one for each subject |
 | | `/git:undo` | Undoes a commit, amend, rebase or reset through the reflog, with a backup |
-| [`craft`](https://github.com/kamoca-labs/craft#readme) | `/craft:craft` | Root rule (less code is better than more code) and triage of SOLID, KISS, YAGNI, DRY and Clean Code. It reads the reference of each principle with a signal. Green tests trigger the reminder for changes of 20 code lines or more |
+| [`craft`](https://github.com/kamoca-labs/craft#readme) | `/craft:craft` | Turns a request to implement, fix, refactor, migrate or write into a linear list of verified items in `.claude/local/activities/`, one item at a time. Also the root rule (less code is better than more code) and triage of SOLID, KISS, YAGNI, DRY and Clean Code. Green tests trigger the reminder for changes of 20 code lines or more |
 | | `/craft:audit` | Audits the repository and reports concrete findings |
 | | `/craft:setup` | Prepares a new project: tests, a linter with size and complexity limits, and the `test` and `lint` scripts |
-| | `/craft:atdd` | Runs the 7-step ATDD workflow, from the Given/When/Then specification to the final green. It has tasks for each scenario and a goal that holds the end of the turn until the condition is true |
+| | `/craft:atdd` | Runs the 7-step ATDD workflow, from the Given/When/Then specification to the final green. It opens an activity with one item per scenario, and a Stop hook holds the end of the turn until each item has evidence |
 | | `/craft:memory` | Long-term project memory in `.claude/memory/`, inside the repo. The hook loads the catalog in every session and denies memory outside the project |
-| | (automatic) | Hooks inject session rules for writing, memory, tasks, research and code changes |
+| | (automatic) | Hooks inject session rules for writing, memory, research and code changes, and hold the end of the turn while an activity has an item without evidence |
 | [`design`](https://github.com/kamoca-labs/design#readme) | `/design:setup` | Records DESIGN.md, semantic color pairs, typography, shared breakpoints and existing patterns |
 | | `/design:design` | Creates a responsive mockup with applicable screen states; product implementation starts after explicit approval |
 | | `/design:style` | Visual-only iteration, migrated from craft:style in craft 0.16.0; behavior still follows craft:atdd |
